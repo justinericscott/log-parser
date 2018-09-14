@@ -12,30 +12,56 @@ import org.junit.jupiter.api.Test;
 class LogParserTest {
 
 	@Test
-	void run() {
+	void parseJava() {
 		File file = getFile("tomcat-stdOut.log");
 		assertNotNull(file);
 		assertTrue(file.exists());
 		LogParser parser = new LogParser();
-		List<String> list = parser.parse(file);
-		assertNotNull(list);
-		assertFalse(list.isEmpty());
-		list.forEach(s -> {
+		parser.setFile(file);
+		parser.parse();
+		List<String> lines = parser.getLines(); 
+		assertNotNull(lines);
+		assertFalse(lines.isEmpty());
+		lines.forEach(s -> {
 			System.out.println(s);
 		});
 	}
 	
 	@Test
-	public void runK() {
+	public void parseK() {
 		File file = getFile("db_PA00001_2018-09-11_1937.log");
 		assertNotNull(file);
 		assertTrue(file.exists());
 		LogParser parser = new LogParser();
-		List<String> list = parser.parse(file);
-		assertNotNull(list);
-		assertFalse(list.isEmpty());
-		list.forEach(s -> {
+		parser.setFile(file);
+		parser.parse();
+		List<String> lines = parser.getLines(); 
+		assertNotNull(lines);
+		assertFalse(lines.isEmpty());
+		lines.forEach(s -> {
 			System.out.println(s);
+		});
+	}
+	
+	@Test
+	public void process() {
+		File file = getFile("db_PA00001_2018-09-11_1937.log");
+		assertNotNull(file);
+		assertTrue(file.exists());
+		LogParser parser = new LogParser();
+		parser.setFile(file);
+		parser.parse();
+		List<String> lines = parser.getLines(); 
+		assertNotNull(lines);
+		assertFalse(lines.isEmpty());
+		lines.forEach(line -> {
+			System.out.println(line);
+			parser.process(line);
+		});
+		parser.getProcessed().forEach(l -> {
+			l.forEach(p -> {
+				System.out.println(p);
+			});
 		});
 	}
 	
